@@ -1,0 +1,22 @@
+#map{
+	width: 850px;
+	height: 620px;
+}
+#slider{
+	width: 850px;
+}
+
+.garage{
+	fill: crimson;
+	opacity: 0.6;
+}
+
+.street{
+	stroke: teal;
+	opacity: 0.6;
+	/*stroke-width: 2px;*/
+}
+
+body {
+	padding: 20px 0px 0px 50px;
+}
