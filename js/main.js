@@ -57,8 +57,8 @@ function go(err, locs, occs){
           )
           .ticks(12)
       )
-      .on("slide", slide)
-      .step(5 * 60 * 1000);
+      .on("slide", slide);
+      // .step(5 * 60 * 1000);
 
   var s = d3.select("#slider")
         .call(slider);
@@ -71,6 +71,7 @@ function go(err, locs, occs){
     .attr("transform","rotate(-90)");
 
   function slide(event, t){
+    
     time = t;
     garageCircle
       .attr("r", function(d){

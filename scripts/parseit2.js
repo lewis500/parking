@@ -26,26 +26,26 @@ var readJSON= function(path){
 
 ////////rename get the raw data, renamed the columns, only take every five minutes readings, create a d_occs file
 
-// var locs = JSON.parse(fs.readFileSync('../data/locs_with_ids.json'));
+var locs = JSON.parse(fs.readFileSync('../data/locs_with_ids.json'));
 
-// var headers = d3.keys(locs);
+var headers = d3.keys(locs);
 
-// headers.unshift('time')
+headers.unshift('time');
 
-// csv()
-// 	.from('../data/raw_data.csv', {delimiter: ',', columns: true})
-// 	.transform(function(row, i){
-// 		if((i>0)&&((i-1)%5==0)) {
-// 			_.each(row, function(val, key){
-// 				if(key=='time') row.time = (new Date(row.time)).getTime();
-// 				else row[key] = (val) ? +val : 0;
-// 			})
-// 			return _.values(row);
-// 		}else{
-// 			return null;
-// 		}
-// 	})
-// 	.to.path('../data/occs_parsed.csv', {delimiter: ',', columns: headers, header: true})
+csv()
+	.from('../data/raw_data.csv', {delimiter: ',', columns: true})
+	.transform(function(row, i){
+		if((i>0)&&((i-1)%5==0)) {
+			_.each(row, function(val, key){
+				if(key=='time') row.time = (new Date(row.time)).getTime();
+				else row[key] = (val) ? +val : null;
+			})
+			return _.values(row);
+		}else{
+			return null;
+		}
+	})
+	.to.path('../data/occs_parsed.csv', {delimiter: ',', columns: headers, header: true});
 
 
 ////////////////////create the occs_deltas file
@@ -86,25 +86,24 @@ readJSON('../data/pems_station_locs_new.json')
 */
 
 //turn the detector locations into a csv
-readJSON('../data/locs_with_ids.json')
-.then(function(j){
-	var midput = _.map(j, function(val, key){
-		return {id: key, 
-			name: val.name,
-			lat: (!val.loc[0]) ? (val.loc.lat) : "NA", 
-			lon:  (!val.loc[0]) ? (val.loc.lon) : "NA", 
-			lat_0: (val.loc[0]) ? (val.loc[0].lat) : "NA", 
-			lon_0: (val.loc[0]) ? (val.loc[0].lon) : "NA", 
-			lat_1: (val.loc[0]) ? (val.loc[1].lat) : "NA", 
-			lon_1: (val.loc[0]) ? (val.loc[1].lon) : "NA", 
-			off_or_on_street: val.type,
-			capacity: val.cap
-		};
-	})
-	console.log("LOG:",midput);
-	var output = JSON2CSV(midput);
-	fs.writeFile('../data/detector_station_info.csv', output);
-})
+// readJSON('../data/locs_with_ids.json')
+// .then(function(j){
+// 	var midput = _.map(j, function(val, key){
+// 		return {id: key, 
+// 			name: val.name,
+// 			lat: (!val.loc[0]) ? (val.loc.lat) : "NA", 
+// 			lon:  (!val.loc[0]) ? (val.loc.lon) : "NA", 
+// 			lat_0: (val.loc[0]) ? (val.loc[0].lat) : "NA", 
+// 			lon_0: (val.loc[0]) ? (val.loc[0].lon) : "NA", 
+// 			lat_1: (val.loc[0]) ? (val.loc[1].lat) : "NA", 
+// 			lon_1: (val.loc[0]) ? (val.loc[1].lon) : "NA", 
+// 			off_or_on_street: val.type,
+// 			capacity: val.cap
+// 		};
+// 	})
+// 	var output = JSON2CSV(midput);
+// 	fs.writeFile('../data/detector_station_info.csv', output);
+// })
 
 
 
