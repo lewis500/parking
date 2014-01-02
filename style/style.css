@@ -1,9 +1,9 @@
 #map{
-	width: 850px;
+	width: 620px;
 	height: 540px;
 }
 #slider{
-	width: 850px;
+	width: 620px;
 }
 
 .garage{
@@ -30,16 +30,10 @@ body {
   stroke: #0f0;
 }
 
-.I85W{
-	stroke: #57E4FF;
-	stroke-width: 3px;
+.road{
+	/*stroke: #57E4FF;*/
+	/*stroke-width: 5px;*/
 	stroke-opacity: 1;
 	/*display: none;*/
 }
 
-.eighty-five-E{
-	stroke: #57E4FF;
-	stroke-width: 3px;
-	stroke-opacity: 1;
-	/*display: none;*/
-}
