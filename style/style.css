@@ -1,22 +1,45 @@
 #map{
 	width: 850px;
-	height: 620px;
+	height: 540px;
 }
 #slider{
 	width: 850px;
 }
 
 .garage{
-	fill: crimson;
-	opacity: 0.6;
-}
-
-.street{
-	stroke: teal;
-	opacity: 0.6;
-	/*stroke-width: 2px;*/
+	fill: #e74c3c;
+	opacity: 1;
 }
 
 body {
 	padding: 20px 0px 0px 50px;
+}
+
+#bayBridge{
+      fill: none;
+      stroke: #00f;
+      stroke-width: 4px;
+}
+
+.pipe {
+  fill: none;
+  stroke: #000;
+}
+.flow {
+  fill: none;
+  stroke: #0f0;
+}
+
+.I85W{
+	stroke: #57E4FF;
+	stroke-width: 3px;
+	stroke-opacity: 1;
+	/*display: none;*/
+}
+
+.eighty-five-E{
+	stroke: #57E4FF;
+	stroke-width: 3px;
+	stroke-opacity: 1;
+	/*display: none;*/
 }

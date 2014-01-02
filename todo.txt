@@ -1,0 +1,45 @@
+SHORT TERM
+make a main3 in which the traffic just changes color
+delete useless files in repo
+push repo
+
+figure out a better way to do the data binding
+
+HIGHWAY OBJECTS
+make an array of the higway names
+for each highway name, initalize a highway with that name
+make an object mapping highway names to highway routes and transforms
+
+give each highway a velocity property
+in the tick function, loop over the highways, applying the update function for that highway
+
+make an update function
+
+make a global w variable
+
+
+
+
+make a clock controller
+
+
+TRAFFIC
+draw 6 highway paths
+
+
+
+other directions
+change from velocity to spacing
+add a density component via the spacing of the cars
+bay bridge and 101 traffic data
+bay bridge and 101 shapes
+use oop to make the routes
+
+make slider look awesome by copying css
+
+get plugin from Ian
+
+tooltips and mouseover on garage stuff
+
+
+

@@ -17,3 +17,4 @@ application/logs/*.php
 
 /data/raw_data.csv
 /raw_test.csv
+/scripts/node_modules/*
