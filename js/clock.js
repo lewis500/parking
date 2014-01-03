@@ -1,4 +1,3 @@
-
 var maxSize = 250;
 
 var offSetX = maxSize/2;
@@ -23,7 +22,8 @@ var vis = d3.select("#clock").append("svg").attr("width", width).attr("height", 
 
 var clockGroup = vis.append("g").attr("transform", "translate(" + offSetX + "," + offSetY + ")");
 
-clockGroup.append("circle").attr("r", rad).attr("fill","white").attr("class", "clock outercircle").attr("stroke", "black");
+clockGroup.append("circle").attr("r", rad).attr("fill","white").attr("class", "clock outercircle").attr("stroke", "black")
+.attr("stroke-width","3px");
 
 clockGroup.append("circle").attr("r", 4).attr("fill", "black").attr("class", "clock innercircle");
 
@@ -48,27 +48,34 @@ var gHands = vis.append("g")
     .attr("transform", "translate(" + offSetX + "," + offSetY + ")")
     .attr("class","g-hands");
 
-var minuteHand = gHands.append("g");
+var minuteHand = gHands.append("g").attr("class","hand");
     
 minuteHand.append("rect")
   .attr({
-    width: rad*0.7,
+    width: rad*0.6,
     height: 4,
     y: -2,
     ry: 4,
+    rx: 4,
+    x: 6,
     transform: "rotate(-90)"
   });
 
-var hourHand = gHands.append("g")
+var hourHand = gHands.append("g").attr("class","hand")
 
 hourHand.append("rect")
     .attr({
-      width: rad*0.5,
+      width: rad*0.4,
       height: 8,
       y: -4,
+      x: 6,
       ry: 8,
+      rx: 8,
       transform: "rotate(-90)"
     });
+
+minuteHand.attr("transform","rotate(" + (time.minute() * 6) +")" );
+hourHand.attr("transform","rotate(" + ( (time.hour()%12) * 360/12 + (time.minute() /60 * 360/12) ) +")" );
 
 var curAngle, curAngleHour;
 
@@ -101,6 +108,8 @@ var dragMinute = d3.behavior.drag()
 
       curAngle = newAngle;
 
+      AmPm.text(function(){return (time.hour()>=12) ? "PM" : "AM" })
+
     });
 
 var dragHour = d3.behavior.drag()
@@ -132,6 +141,10 @@ var dragHour = d3.behavior.drag()
       update();
 
       curAngleHour = newAngle;
+
+      AmPm.text(function(){return (time.hour()>+12) ? "PM" : "AM" })
+
+
     });
 
 
@@ -141,3 +154,10 @@ function toDegrees(rad) {
 
 minuteHand.call(dragMinute);
 hourHand.call(dragHour);
+
+var AmPm = gHands.append("g")
+  .append("text")
+  .text(function(){return (time.hour() >= 12) ? "PM" : "AM" })
+  .attr("dx", "0em")
+  .attr("dy","3.5em")
+  .style("text-anchor", "middle")

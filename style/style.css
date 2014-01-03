@@ -52,3 +52,7 @@ body {
 .in{
 	stroke: #2ecc71;
 }
+
+.hand{
+	cursor: pointer;
+}
