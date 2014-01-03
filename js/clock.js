@@ -1,24 +1,23 @@
-var maxSize = 250;
+//=========CLOCK PARAMETERS AND HELPER FUNCTIONS===========
 
-var offSetX = maxSize/2;
 
-var  offSetY = offSetX;
+var maxSize = 250
+  , offSetX = maxSize/2
+  , offSetY = offSetX
+  , width = maxSize
+  , height = maxSize
+  ,fontSize = 14
+  , maxSize=Math.min(width,height)
+  , pi = Math.PI
+  , rad = maxSize/2-40;
 
-var  width = maxSize;
+function toDegrees(rad) {
+  return rad * (180/Math.PI);
+}
 
-var  height = maxSize;
+//=========CREATE THE SVG AND CLOCK PARTS===========
 
-var fontSize = 14;
-
-var  maxSize=Math.min(width,height);
-
-var  pi = Math.PI;
-
-var rad = maxSize/2-40;
-
-var scaleHours = d3.scale.linear().range([0, 11 + 59 / 60]).domain([0, 2 * pi]);
-
-var vis = d3.select("#clock").append("svg").attr("width", width).attr("height", height);
+var  vis = d3.select("#clock").append("svg").attr("width", width).attr("height", height);
 
 var clockGroup = vis.append("g").attr("transform", "translate(" + offSetX + "," + offSetY + ")");
 
@@ -74,8 +73,7 @@ hourHand.append("rect")
       transform: "rotate(-90)"
     });
 
-minuteHand.attr("transform","rotate(" + (time.minute() * 6) +")" );
-hourHand.attr("transform","rotate(" + ( (time.hour()%12) * 360/12 + (time.minute() /60 * 360/12) ) +")" );
+//==========ROTATING CLOCKHANDS FUNCTIONALITY=====
 
 var curAngle, curAngleHour;
 
@@ -98,17 +96,11 @@ var dragMinute = d3.behavior.drag()
 
       if(Math.abs(delMin) < 3) return;
       
-      minuteHand.attr("transform", "rotate(" + (newAngle) + ")");
-
       time.add(delMin, "minutes");
-
-      hourHand.attr("transform","rotate(" + ( (time.hour()%12) * 360/12 + (time.minute() /60 * 360/12) ) +")" );
 
       update();
 
       curAngle = newAngle;
-
-      AmPm.text(function(){return (time.hour()>=12) ? "PM" : "AM" })
 
     });
 
@@ -132,28 +124,18 @@ var dragHour = d3.behavior.drag()
 
       if(Math.abs(delMin) < 10) return;
 
-      hourHand.attr("transform", "rotate(" + (newAngle) + ")");
-
       time.add(delMin, "minutes");
-
-      minuteHand.attr("transform","rotate(" + (time.minute() * 6) +")" );
 
       update();
 
       curAngleHour = newAngle;
 
-      AmPm.text(function(){return (time.hour()>+12) ? "PM" : "AM" })
-
-
     });
-
-
-function toDegrees(rad) {
-  return rad * (180/Math.PI);
-}
 
 minuteHand.call(dragMinute);
 hourHand.call(dragHour);
+
+//===========AM VS PM LABEL ===============
 
 var AmPm = gHands.append("g")
   .append("text")
@@ -161,3 +143,49 @@ var AmPm = gHands.append("g")
   .attr("dx", "0em")
   .attr("dy","3.5em")
   .style("text-anchor", "middle")
+
+//===========UPDATE FUNCTION FOR WHENEVER TIME CHANGES===============
+
+function update(){
+
+  hourHand.attr("transform","rotate(" + ( (time.hour()%12) * 360/12 + (time.minute() /60 * 360/12) ) +")" );
+  minuteHand.attr("transform","rotate(" + (time.minute() * 6) +")" );
+  
+  d3.selectAll(".out")
+    .attr("stroke-width", function(d){
+      var q = d[bisect(d, time, 0, d.length - 1)].flow;
+      return th(q);
+    });
+
+  d3.selectAll(".in")
+    .attr("stroke-width", function(d){
+      var q = d[bisect(d, time, 0, d.length - 1)].flow;
+      return th(q);
+    });
+
+  d3.selectAll(".garage").attr("r", function(d){
+      var o = d.occupancy,
+        v = o[bisect(o, time, 0, o.length - 1)]
+      return r(v.occ); 
+    });
+
+  AmPm.text(function(){return (time.hour()>+12) ? "PM" : "AM" })
+
+} //update;
+
+var last = 0;
+
+d3.timer(function(elapsed) {
+  if(pause) return false;
+
+  t = (elapsed - last)/duration *5;
+
+  last = elapsed;
+
+  time.add(t,"minutes");
+
+  if(time.isAfter(endOfDay)) time = startOfDay;
+
+  update();
+
+});
