@@ -4,10 +4,27 @@
   <title>Testmap</title>
   <meta charset="utf-8" />
   <style>
+
+    div.tooltip {   
+      position: absolute;           
+      text-align: center;           
+      width: 60px;                  
+      height: 28px;                 
+      padding: 2px;             
+      font: 12px sans-serif;        
+      background: lightsteelblue;   
+      border: 0px;      
+      border-radius: 8px;           
+      pointer-events: none;         
+    }
+  
   @import url(http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css);
   </style>
   <link rel="stylesheet" href="style/style.css">
   <link rel="stylesheet" href="style/slider.css">
+
+
+
   <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
   <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
   <script type="text/javascript" src="js/stamen.js"></script>
@@ -15,10 +32,9 @@
   <script type="text/javascript" src="js/slider.js"></script>
   <script type="text/javascript" src="js/flow.js"></script>
   <script type="text/javascript" src="js/sticker.js"></script>
-
   <script type="text/javascript" src="js/polyline.js"></script>
-
   <script type="text/javascript" src="http://d3js.org/queue.v1.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 </head>
 <body>

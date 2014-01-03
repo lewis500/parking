@@ -1,0 +1,7 @@
+In the 2010 Census, San Francisco counted about 789,000 residents http://quickfacts.census.gov/qfd/states/06/06075.html , but if you took a head count in the middle of the day, you'd find another 162,000 people. We know this because the Census Bureau has finally started estimating a new statistic called "Commuter-Adjusted Daytime Population," which gives a little bit clearer portrait of how many lives mesh together in American cities than simple residency numbers do. After all, a city is much more than a piece of land that happens to have a bunch of houses: it's an activity center, where people work, shop, learn, get treated, and interact with governments. 
+
+As a nice side effect of their open data initiatives, San Francisco Muni has made it possible to visualize a little piece of this daily migration. The SF Park program raises and lowers the price of public parking spaces to reflect demand (just like Uber and airlines do), and as part of the initiative they've made it possible for app developers to find out, in real time, how many cars are parked in municipal garages. I recorded this data and combined it with traffic data from the California Department of Transportation's highway sensors to create the visualization below. The circles represent the occupancies of the garages, and their colors change according to how full they are. 
+
+ and the highways are colored according to the traffic flows (the number of cars per hour).
+
+

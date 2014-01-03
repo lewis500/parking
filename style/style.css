@@ -1,14 +1,16 @@
 #map{
 	width: 620px;
-	height: 540px;
+	height: 450px;
 }
 #slider{
 	width: 620px;
 }
 
 .garage{
-	fill: #e74c3c;
+	fill: rgba(0, 255, 235, 0.88);
 	opacity: 1;
+	stroke: black;
+	stroke-width: 1px;
 }
 
 body {
@@ -33,7 +35,20 @@ body {
 .road{
 	/*stroke: #57E4FF;*/
 	/*stroke-width: 5px;*/
-	stroke-opacity: 1;
+	stroke-opacity: .8;
 	/*display: none;*/
 }
 
+#clock{
+	position: relative;
+	top: -250px;
+	right: -400px;
+}
+
+.out{
+	stroke: #e74c3c;
+}
+
+.in{
+	stroke: #2ecc71;
+}

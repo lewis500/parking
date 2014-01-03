@@ -1,5 +1,5 @@
 
-var maxSize = 300;
+var maxSize = 250;
 
 var offSetX = maxSize/2;
 
@@ -15,13 +15,9 @@ var  maxSize=Math.min(width,height);
 
 var  pi = Math.PI;
 
-var rad=maxSize/2-40;
+var rad = maxSize/2-40;
 
-var scaleSecs = d3.scale.linear().domain([1, 60 + 999 / 1000]).range([0, 2 * pi]);
-
-var scaleMins = d3.scale.linear().domain([0, 59 + 59 / 60]).range([0, 2 * pi]);
-
-var scaleHours = d3.scale.linear().domain([0, 11 + 59 / 60]).range([0, 2 * pi]);
+var scaleHours = d3.scale.linear().range([0, 11 + 59 / 60]).domain([0, 2 * pi]);
 
 var vis = d3.select("#clock").append("svg").attr("width", width).attr("height", height);
 
@@ -37,12 +33,8 @@ tickLabelGroup.selectAll("text.label")
     .data(d3.range(12))
     .enter().append("text")
     .attr("class", "label")
-    // .attr("font-size",thisObj.fontSize)
-    // .attr("font-family",thisObj.fontName)
     .attr("x", function(d, i){return ((rad- fontSize))*Math.cos(2*i*0.26-1.57)  })
     .attr("y", function(d, i){return 7+((rad- fontSize))*Math.sin(2*i*0.26-1.57)   })
-    // .attr("fill", thisObj.textColor)
-//    .attr("alignment-baseline", "middle")
     .attr("text-anchor", "middle")
     .text(function(d, i)
              { 
@@ -52,65 +44,100 @@ tickLabelGroup.selectAll("text.label")
              }
          );
 
-var render = function(data) {
-    var hourArc, minuteArc, secondArc;
+var gHands = vis.append("g")
+    .attr("transform", "translate(" + offSetX + "," + offSetY + ")")
+    .attr("class","g-hands");
 
-    clockGroup.selectAll(".clockhand").remove();
-    secondArc = d3.svg.arc().innerRadius(0).outerRadius(rad*0.85).startAngle(function(d) {
-      return scaleSecs(d.numeric);
-    }).endAngle(function(d) {
-      return scaleSecs(d.numeric);
+var minuteHand = gHands.append("g");
+    
+minuteHand.append("rect")
+  .attr({
+    width: rad*0.7,
+    height: 4,
+    y: -2,
+    ry: 4,
+    transform: "rotate(-90)"
+  });
+
+var hourHand = gHands.append("g")
+
+hourHand.append("rect")
+    .attr({
+      width: rad*0.5,
+      height: 8,
+      y: -4,
+      ry: 8,
+      transform: "rotate(-90)"
     });
-    minuteArc = d3.svg.arc().innerRadius(0).outerRadius(rad*0.7).startAngle(function(d) {
-      return scaleMins(d.numeric);
-    }).endAngle(function(d) {
-      return scaleMins(d.numeric);
+
+var curAngle, curAngleHour;
+
+var dragMinute = d3.behavior.drag()
+    .on("drag", function() {
+
+      var mx = d3.event.x;
+      var my = d3.event.y;
+
+      var newAngle = toDegrees( Math.atan2(my, mx) ) + 90;
+
+      var delMin = (newAngle - curAngle)/6;
+
+      if(newAngle >= 0 && curAngle <= -60) {
+        delMin -= 60;
+      }
+      if(newAngle < -60 && curAngle >= 0){
+        delMin += 60;
+      }
+
+      if(Math.abs(delMin) < 3) return;
+      
+      minuteHand.attr("transform", "rotate(" + (newAngle) + ")");
+
+      time.add(delMin, "minutes");
+
+      hourHand.attr("transform","rotate(" + ( (time.hour()%12) * 360/12 + (time.minute() /60 * 360/12) ) +")" );
+
+      update();
+
+      curAngle = newAngle;
+
     });
-    hourArc = d3.svg.arc().innerRadius(0).outerRadius(rad*0.5).startAngle(function(d) {
-      return scaleHours(d.numeric % 12);
-    }).endAngle(function(d) {
-      return scaleHours(d.numeric % 12);
+
+var dragHour = d3.behavior.drag()
+    .on("drag", function() {
+
+      var mx = d3.event.x;
+      var my = d3.event.y;
+
+      var newAngle = toDegrees( Math.atan2(my, mx) ) + 90;
+
+      var delMin = (newAngle - curAngleHour)*2;
+
+      if(newAngle >= 0 && curAngleHour <= -60) {
+        delMin -= 60*12;
+      }
+
+      if(newAngle < -60 && curAngleHour >= 0){
+        delMin += 60*12;
+      }
+
+      if(Math.abs(delMin) < 10) return;
+
+      hourHand.attr("transform", "rotate(" + (newAngle) + ")");
+
+      time.add(delMin, "minutes");
+
+      minuteHand.attr("transform","rotate(" + (time.minute() * 6) +")" );
+
+      update();
+
+      curAngleHour = newAngle;
     });
-    return clockGroup.selectAll(".clockhand").data(data).enter().append("svg:path").attr("d", function(d) {
-      if (d.unit === "seconds") {
-        return secondArc(d);
-      } else if (d.unit === "minutes") {
-        return minuteArc(d);
-      } else if (d.unit === "hours") {
-        return hourArc(d);
-      }
-    }).attr("class", "clockhand").attr("stroke", "black").attr("stroke-width", function(d) {
-      if (d.unit === "seconds") {
-        return 1;
-      } else if (d.unit === "minutes") {
-        return 3;
-      } else if (d.unit === "hours") {
-        return 4;
-      }
-    }).attr("fill", "none");
-  };
 
-  fields = function(dateTime) {
-    var dateTime, hour, minute, second,ampm,min;
 
-    second = dateTime.getSeconds();
-    minute = dateTime.getMinutes();
-    hour = dateTime.getHours();
-    ampm="a.m";
-    if (minute<10) min="0"+minute;
-    else min=minute;
-    if (hour>=12) ampm="p.m";
+function toDegrees(rad) {
+  return rad * (180/Math.PI);
+}
 
-    hour+= minute / 60;
-
-    return [
-      {
-        "unit": "minutes",
-        "numeric": minute
-      }, {
-        "unit": "hours",
-        "numeric": hour
-      }
-    ];
-
-};//fields()
+minuteHand.call(dragMinute);
+hourHand.call(dragHour);
