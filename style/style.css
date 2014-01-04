@@ -1,14 +1,14 @@
 #map{
 	width: 620px;
-	height: 450px;
+	height: 400px;
 }
 #slider{
 	width: 620px;
 }
 
 .garage{
-	fill: rgba(0, 255, 235, 0.88);
-	opacity: 1;
+	/*fill: rgba(0, 255, 235, 0.88);*/
+	opacity: .88;
 	stroke: black;
 	stroke-width: 1px;
 }
@@ -40,9 +40,9 @@ body {
 }
 
 #clock{
-	position: relative;
-	top: -250px;
-	right: -400px;
+	position: absolute;
+	top: 175px;
+	left: 460px;
 }
 
 .out{
@@ -55,4 +55,19 @@ body {
 
 .hand{
 	cursor: pointer;
+}
+
+.axis path, .axis line {
+  
+  fill: none;
+  stroke: #000;
+  stroke-width: 1.5px;
+  shape-rendering: crispEdges;
+}
+
+#pause{
+	position: absolute;
+	z-index: 40;
+	left: 520px;
+	top: 25px;
 }

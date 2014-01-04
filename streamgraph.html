@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <link href="style/streamgraph.css" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/assets/images/favicon.ico">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min.js"></script>
+  <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+</head>
+
+<body>
+
+  <div class="chart"></div> 
+
+</body>
+
+<script>
+
+var tooltip = d3.select("#garageChart")
+    .append("div")
+    .attr("class", "remove")
+    .style("position", "absolute")
+    .style("z-index", "20")
+    .style("visibility", "hidden")
+    .style("top", "85px")
+    .style("left", "75px");
+
+var total = 0;
+var margin = { top: 5, right: 40, bottom: 20, left: 50 };
+var width = 620;
+var height = 500 - margin.top - margin.bottom; 
+var max = 0;
+
+var x = d3.time.scale().range([0, width]);
+var y = d3.scale.linear().range([height, 0]);
+
+var z = d3.scale.category20c();
+
+var stack = d3.layout.stack()
+  .values(function(d) { return d.values; })
+  .x(function(d) { return d.time; })
+  .y(function(d) { return d.value; });
+
+var area = d3.svg.area().interpolate("cardinal")
+    .x(function(d) { return x(d.time); })
+    .y0(function(d) { return y(d.y0); })
+    .y1(function(d) { return y(d.value + d.y0); });
+
+var svg = d3.select("#garageChart").append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var chart = d3.json("data/occs.json", function(json) {
+  data = json;
+
+  data.forEach(function(d) {
+    d.time = new Date(d.time);
+  });
+
+
+  var dimensions = d3.keys(data[0]).filter(function(key) { return key != "time"; });
+
+
+  var layers = dimensions.map(function(name){
+    return {
+      key: name,
+      values: data.map(function(d) { 
+        return { time: d.time, value: +d[name], garage: name };
+      })
+    };
+  });
+
+  console.log(layers);
+  
+  x.domain(d3.extent(data, function(d) { return d.time; }));
+
+  data.forEach(function(row){
+
+    var s = _.initial(d3.values(row));
+
+    var tot = s.reduce(function(a,b){return a + b; });
+
+    max = d3.max([tot, max]);
+
+  });
+  
+  y.domain([-max*.05, max*1.2]);
+
+  var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+    .ticks(12);
+
+  var yAxis = d3.svg.axis()
+    .orient("right")
+    .scale(y);
+
+  svg.selectAll(".layer")
+    .data(stack(layers))
+    .enter().append("path")
+    .attr("class", "layer")
+    .attr("d", function(d) { return area(d.values); })
+    .style("fill", function(d, i){ return z(i); });
+
+  svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis.orient("left"));
+
+  svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+    var datearray = [];
+
+
+  svg.selectAll(".layer")
+      .on("mousemove", function(d, i) {
+
+        var mousex = d3.mouse(this);
+            mousex = mousex[0];
+     
+        var invertedx = x.invert(mousex);
+            invertedx = "" + (invertedx.getHours() + 1) + "/" + invertedx.getDate() + "";
+        //console.log(invertedx);
+        var selected = (d.values);
+        for (var k = 0; k < selected.length; k++) {
+          datearray[k] = selected[k].time;
+          datearray[k] = "" + (datearray[k].getHours() + 1) + "/" + datearray[k].getDate() + "";
+        }
+        mousedate = datearray.indexOf(invertedx);
+        occ = d.values[mousedate].value;
+        time = d.values[mousedate].time;
+        time = invertedx;//format(date);
+        //console.log(invertedx);
+        garage = d.values[mousedate].garage; 
+        //console.log("production: ", pro, " date: ", date, " garage: ", garage);
+        //d3.select(this), 
+        tooltip.html("<p>" + "garage: " + garage + "<br>date: " + time + "<br>occupancy: " + occ + "</p>").style("visibility", "visible");
+        svg.selectAll(".layer").transition()
+        .duration(10)
+        .attr("opacity", 1);
+      })
+      .on("click", function(d, i) {
+        svg.selectAll(".layer").transition()
+        .duration(250)
+        .attr("opacity", function(d, j) {
+          return j != i ? 0.2 : 1;
+      })})
+      .on("mouseout", function(d, i) {
+        tooltip.style("visibility", "hidden");
+      });
+
+  var vertical = d3.select("#garageChart")
+          .append("div")
+          .attr("class", "remove")
+          .style("position", "absolute")
+          .style("z-index", "19")
+          .style("width", "1px")
+          .style("height", (y(0) - y(max) + margin.top) + "px")
+          .style("top", (y(max) + 2*margin.top + margin.bottom )+ "px")
+          // .style("bottom", margin.bottom + "px")
+          .style("left", "0px")
+          .style("background", "#fff");
+
+    d3.select("#garageChart")
+        .on("mousemove", function(){  
+           mousex = d3.mouse(this);
+           mousex = mousex[0] + 5;
+           vertical.style("left", mousex + "px" )})
+        .on("mouseover", function(){  
+           mousex = d3.mouse(this);
+           mousex = mousex[0] + 5;
+           vertical.style("left", mousex + "px")});
+
+});
+
+</script>
+
+</html>

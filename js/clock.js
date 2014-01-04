@@ -1,6 +1,5 @@
 //=========CLOCK PARAMETERS AND HELPER FUNCTIONS===========
 
-
 var maxSize = 250
   , offSetX = maxSize/2
   , offSetY = offSetX
@@ -102,6 +101,8 @@ var dragMinute = d3.behavior.drag()
 
       curAngle = newAngle;
 
+      last = 0;
+
     });
 
 var dragHour = d3.behavior.drag()
@@ -114,7 +115,7 @@ var dragHour = d3.behavior.drag()
 
       var delMin = (newAngle - curAngleHour)*2;
 
-      if(newAngle >= 0 && curAngleHour <= -60) {
+      if(newAngle >= 180 && curAngleHour <= -60) {
         delMin -= 60*12;
       }
 
@@ -130,10 +131,12 @@ var dragHour = d3.behavior.drag()
 
       curAngleHour = newAngle;
 
+      last = 0;
+
     });
 
-minuteHand.call(dragMinute);
-hourHand.call(dragHour);
+// minuteHand.call(dragMinute);
+// hourHand.call(dragHour);
 
 //===========AM VS PM LABEL ===============
 
@@ -166,23 +169,39 @@ function update(){
       return th(q[d.ID]);
     });
 
-  AmPm.text(function(){ return (time.hour()>+12) ? "PM" : "AM" })
+  AmPm.text(function(){ return (time.hour()>+12) ? "PM" : "AM" });
+
+  var trans = xLine(time)
+
+  d3.select(".vertical").attr({
+    x1: trans,
+    x2: trans
+  })
+
+
 
 } //update;
 
 var last = 0;
 
-d3.timer(function(elapsed) {
-  if(pause) return false;
+function tick (elapsed){
+  
+      t = (elapsed - last)/duration * timeMultiplier ;
 
-  t = (elapsed - last)/duration * timeMultiplier;
+      time.add(t,"minutes");
 
-  last = elapsed;
+      if(time.isAfter("2013-07-15", "day")){
+        time = moment("12:00 AM July 15, 2013");
+        update();
+      }else{
+        update();
+      } 
 
-  time.add(t,"minutes");
+      last = elapsed;
+      
+      return pause;
+    }
 
-  if(time.isAfter(endOfDay)) time = startOfDay;
-
-  update();
-
-});
+setTimeout(function(){
+  d3.timer(tick)
+},300)

@@ -1,4 +1,9 @@
 SHORT TERM
+
+pause button
+fonts on both vis'
+
+
 dc.js for stacked line chart
 3 days of data, moving averages
 tooltips
