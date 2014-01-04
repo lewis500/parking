@@ -146,30 +146,27 @@ var AmPm = gHands.append("g")
 
 //===========UPDATE FUNCTION FOR WHENEVER TIME CHANGES===============
 
+var o, q;
+
 function update(){
 
   hourHand.attr("transform","rotate(" + ( (time.hour()%12) * 360/12 + (time.minute() /60 * 360/12) ) +")" );
   minuteHand.attr("transform","rotate(" + (time.minute() * 6) +")" );
-  
-  d3.selectAll(".out")
+
+  o = occs[bisect(occs, time, 0, occs.length - 1)];
+  q = flows[bisect(flows, time, 0, flows.length - 1)];
+
+  garage
+    .attr("r", function(d){
+      return r( o[d.ID] );
+    });
+
+  d3.selectAll(".road")
     .attr("stroke-width", function(d){
-      var q = d[bisect(d, time, 0, d.length - 1)].flow;
-      return th(q);
+      return th(q[d.ID]);
     });
 
-  d3.selectAll(".in")
-    .attr("stroke-width", function(d){
-      var q = d[bisect(d, time, 0, d.length - 1)].flow;
-      return th(q);
-    });
-
-  d3.selectAll(".garage").attr("r", function(d){
-      var o = d.occupancy,
-        v = o[bisect(o, time, 0, o.length - 1)]
-      return r(v.occ); 
-    });
-
-  AmPm.text(function(){return (time.hour()>+12) ? "PM" : "AM" })
+  AmPm.text(function(){ return (time.hour()>+12) ? "PM" : "AM" })
 
 } //update;
 
@@ -178,7 +175,7 @@ var last = 0;
 d3.timer(function(elapsed) {
   if(pause) return false;
 
-  t = (elapsed - last)/duration *5;
+  t = (elapsed - last)/duration * timeMultiplier;
 
   last = elapsed;
 
