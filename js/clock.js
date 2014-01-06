@@ -189,7 +189,7 @@ function update(){
     });
 
   if( selectGarage !== "total"){
-    tooltip.html("<p>" + "garage: " + garageKey[selectGarage] + "<br>date: " + time.format("h:mm A") + "<br>occupancy: " 
+    tooltip.html("<p>" + "garage: " + garageKey[selectGarage] + "<br>time: " + time.format("h:mm A") + "<br>occupancy: " 
       +  o[selectGarage] + 
       "</p>");
   }else{
