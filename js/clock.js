@@ -201,4 +201,4 @@ function tick (elapsed){
 
 setTimeout(function(){
   d3.timer(tick)
-},300)
+},400)
