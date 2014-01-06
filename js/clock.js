@@ -1,5 +1,5 @@
 //=========CLOCK PARAMETERS AND HELPER FUNCTIONS===========
-var maxSize = 250
+var maxSize = 230
   , offSetX = maxSize/2
   , offSetY = offSetX
   , width = maxSize
@@ -7,7 +7,8 @@ var maxSize = 250
   ,fontSize = 14
   , maxSize=Math.min(width,height)
   , pi = Math.PI
-  , rad = maxSize/2-40;
+  , rad = maxSize/2-40
+  , chartLabel = d3.select("#label")
 
 function toDegrees(rad) {
   return rad * (180/Math.PI);
@@ -15,12 +16,20 @@ function toDegrees(rad) {
 
 //=========CREATE THE SVG AND CLOCK PARTS===========
 
-var  vis = d3.select("#clock").append("svg").attr("width", width).attr("height", height);
+var  vis = d3.select("#clock")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
-var clockGroup = vis.append("g").attr("transform", "translate(" + offSetX + "," + offSetY + ")");
+var clockGroup = vis.append("g")
+    .attr("transform", "translate(" + offSetX + "," + offSetY + ")");
 
-clockGroup.append("circle").attr("r", rad).attr("fill","white").attr("class", "clock outercircle").attr("stroke", "black")
-.attr("stroke-width","3px");
+clockGroup.append("circle")
+    .attr("r", rad)
+    .attr("fill","white")
+    .attr("class", "clock outercircle")
+    .attr("stroke", "black")
+    .attr("stroke-width","3px");
 
 clockGroup.append("circle").attr("r", 4).attr("fill", "black").attr("class", "clock innercircle");
 
@@ -50,7 +59,7 @@ var minuteHand = gHands.append("g").attr("class","hand");
 minuteHand.append("rect")
   .attr({
     width: rad*0.6,
-    height: 4,
+    height: 2,
     y: -2,
     ry: 4,
     rx: 4,
@@ -134,9 +143,6 @@ var dragHour = d3.behavior.drag()
 
     });
 
-// minuteHand.call(dragMinute);
-// hourHand.call(dragHour);
-
 //===========AM VS PM LABEL ===============
 
 var AmPm = gHands.append("g")
@@ -153,13 +159,17 @@ var o, q;
 function update(){
 
   hourHand.attr("transform","rotate(" + ( (time.hour()%12) * 360/12 + (time.minute() /60 * 360/12) ) +")" );
+
   minuteHand.attr("transform","rotate(" + (time.minute() * 6) +")" );
 
   o = occs[bisect(occs, time, 0, occs.length - 1)];
+
   q = flows[bisect(flows, time, 0, flows.length - 1)];
 
-  garage
-    .attr("r", function(d){
+  var sum = 0;
+
+  garage.attr("r", function(d){
+      sum += +o[d.ID]; 
       return r( o[d.ID] );
     });
 
@@ -170,12 +180,23 @@ function update(){
 
   AmPm.text(function(){ return (time.hour()>+12) ? "PM" : "AM" });
 
-  var trans = xLine(time)
+  var trans = xLine(time);
 
-  d3.select(".vertical").attr({
-    x1: trans,
-    x2: trans
-  })
+  d3.select(".vertical")
+    .attr({
+      x1: trans,
+      x2: trans
+    });
+
+  if( selectGarage !== "total"){
+    tooltip.html("<p>" + "garage: " + garageKey[selectGarage] + "<br>date: " + time.format("h:mm A") + "<br>occupancy: " 
+      +  o[selectGarage] + 
+      "</p>");
+  }else{
+    tooltip.html("<p>" + "garage: total" + "<br>time: " + time.format("h:mm A") + "<br>occupancy: " 
+      +  sum  + 
+      "</p>");
+  }
 
 } //update;
 
@@ -183,7 +204,7 @@ var last = 0;
 
 function tick (elapsed){
   
-      t = (elapsed - last)/duration * timeMultiplier ;
+      t = (elapsed - last)/duration * timeMultiplier % (2 * duration);
 
       time.add(t,"minutes");
 

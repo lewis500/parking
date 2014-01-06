@@ -11,10 +11,12 @@
 	opacity: .88;
 	stroke: black;
 	stroke-width: 1px;
+	cursor: pointer;
 }
 
 body {
 	padding: 20px 0px 0px 50px;
+  font-family: 'Droid Sans', sans-serif;;
 }
 
 #bayBridge{
@@ -54,7 +56,7 @@ body {
 }
 
 .hand{
-	cursor: pointer;
+	/*cursor: pointer;*/
 }
 
 .axis path, .axis line {
@@ -71,3 +73,34 @@ body {
 	left: 520px;
 	top: 25px;
 }
+
+#label{
+	z-index: 30;
+}
+
+.vertical{
+	stroke-dasharray: 5,2;
+	stroke-width: 2;
+	pointer-events: none;
+}
+
+.layer{
+/*	stroke: black;
+	stroke-width: .25px;*/
+	shape-rendering: pixelated;
+	cursor: pointer;
+
+}
+
+
+/*#tooltip {   
+  position: absolute;           
+  text-align: center;           
+  padding: 12px;             
+  background: lightsteelblue;   
+  border: 0px;      
+  border-radius: 8px;           
+  pointer-events: none;   
+  opacity: 0;
+  z-index: 50;
+}*/

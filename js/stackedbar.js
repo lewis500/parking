@@ -1,9 +1,8 @@
 //NO PRIDE IN MY CODE! I'M COPY AND PASTING THIS! HOLA, ENJALOT
 
-var div = d3.select(".tooltip")
+var div = d3.select(".tooltip");
 
 var format = d3.format('0,000');
-
 
 var data = [{"city":"New York ","non-workers":4437066,"workers commuting out":-303497,"workers commuting in":912451,"workers living and working in city":3337908},
     {"city":"Los Angeles ","non-workers":2024529,"workers commuting out":-584880,"workers commuting in":754973,"workers living and working in city":1163077},
@@ -110,7 +109,7 @@ rects.on("mousemove", function(d) {
                 .style("opacity", 0);   
 
                 d3.select(this).transition()
-                .duration(100).style("stroke-width","0px")
+                .duration(100).style("stroke-width","0px");
         });
 
 var legend = svg.selectAll(".legend")

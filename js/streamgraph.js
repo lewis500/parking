@@ -1,14 +1,14 @@
-var xLine;
+var xLine, z, bg
+  , selectGarageName = "total"
+  ,  selectGarage = "total"
+  , selectOcc;
+
+var st = false;
+
+var sw;
 
 (function(){
-var tooltip = d3.select("#garageChart")
-    .append("div")
-    .attr("class", "remove")
-    .style("position", "absolute")
-    .style("z-index", "20")
-    .style("visibility", "hidden")
-    .style("top", "85px")
-    .style("left", "75px");
+
 
 var total = 0;
 var margin = { top: 5, right: 40, bottom: 20, left: 50 };
@@ -19,9 +19,10 @@ var max = 0;
 xLine = d3.time.scale().range([0, width]);
 var y = d3.scale.linear().range([height, 0]);
 
-var z = d3.scale.category20c();
+z = d3.scale.category20c();
 
-var stack = d3.layout.stack()
+var stack = d3.layout.stack().offset("zero")
+  .order("inside-out")
   .values(function(d) { return d.values; })
   .x(function(d) { return d.time; })
   .y(function(d) { return d.value; });
@@ -37,16 +38,17 @@ var svg = d3.select("#garageChart").append("svg")
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var chart = d3.json("data/occs.json", function(json) {
-  var data = json;
+var chart = d3.json("data/occs.json", function(data) {
 
   data.forEach(function(d) {
-    d.time = moment(d.time);
-  });
 
+    d.time = moment(d.time);
+
+  });
 
   var dimensions = d3.keys(data[0]).filter(function(key) { return key != "time"; });
 
+  z.domain(dimensions)
 
   var layers = dimensions.map(function(name){
     return {
@@ -57,8 +59,6 @@ var chart = d3.json("data/occs.json", function(json) {
     };
   });
 
-  console.log(layers);
-  
   xLine.domain(d3.extent(data, function(d) { return d.time; }));
 
   data.forEach(function(row){
@@ -80,14 +80,22 @@ var chart = d3.json("data/occs.json", function(json) {
 
   var yAxis = d3.svg.axis()
     .orient("right")
-    .scale(y);
+    .scale(y)
+    .ticks(5);
 
-  svg.selectAll(".layer")
+  bg = svg.append("rect")
+    .attr({
+      width: width,
+      height: height,
+      fill: "white"
+    })
+
+  var streams = svg.selectAll(".layer")
     .data(stack(layers))
     .enter().append("path")
     .attr("class", "layer")
     .attr("d", function(d) { return area(d.values); })
-    .style("fill", function(d, i){ return z(i); });
+    .style("fill", function(d, i){ return z(d.key); });
 
   svg.append("g")
     .attr("class", "y axis")
@@ -101,48 +109,52 @@ var chart = d3.json("data/occs.json", function(json) {
   var pressed = false;
 
   svg.selectAll(".layer")
-      // .on("mousemove", function(d, i) {
+      .attr("class", function(d) { return d3.select(this).attr("class") + " g" + d.key; })
+      .on("mouseover", function(d, i) {
 
-      //   var mousex = d3.mouse(this);
-      //       mousex = mousex[0];
-     
-      //   var invertedx = xLine.invert(mousex);
-      //       invertedx = "" + (invertedx.getHours() + 1) + "/" + invertedx.getDate() + "";
-      //   var selected = (d.values);
-      //   for (var k = 0; k < selected.length; k++) {
-      //     datearray[k] = selected[k].time;
-      //     datearray[k] = "" + (datearray[k].getHours() + 1) + "/" + datearray[k].getDate() + "";
-      //   }
-      //   mousedate = datearray.indexOf(invertedx);
-      //   occ = d.values[mousedate].value;
-      //   mouseTime = d.values[mousedate].time;
-      //   mouseTime = invertedx;
-      //   var garage = d.values[mousedate].garage; 
-      //   tooltip.html("<p>" + "garage: " + garage + "<br>date: " + mouseTime + "<br>occupancy: " + occ + "</p>").style("visibility", "visible");
-      //   svg.selectAll(".layer").transition()
-      //   .duration(10)
-      //   .attr("opacity", 1);
-      // })
-      .on("click", function(d, i) {
-        if(pressed){
-            pressed = false;
-            svg.selectAll(".layer")
-            .transition()
-            .duration(250)
-            .attr("opacity", 1)
-          }else{
-            pressed = true
-            svg.selectAll(".layer")
-              .transition()
-              .duration(250)
-              .attr("opacity", function(d, j) {
-                return j != i ? 0.2 : 1;
-              })
-          }
-        })
-      // .on("mouseout", function(d, i) {
-      //   tooltip.style("visibility", "hidden");
-      // });
+        selectGarage = d.key;
+
+        d3.selectAll(".layer, .g-garage")
+          .filter(function(v, i){ 
+            return d.key !== ( v.key ? v.key : v.ID );
+          })
+          .transition()
+          .duration(25)
+          .attr("opacity", 0.2);
+
+        d3.select(this).attr("stroke","black")
+
+      })
+      .on("mouseout", function(d){
+         d3.selectAll(".layer, .g-garage")
+          .transition()
+          .duration(25)
+          .attr("opacity", 1);
+
+          selectGarage = "total";
+          selectGarageName = "total";
+
+          d3.select(this).attr("stroke","none")
+
+      })
+      // .on("click", function(d, i) {
+      //   if(pressed){
+      //       pressed = false;
+      //       svg.selectAll(".layer")
+      //       .transition()
+      //       .duration(250)
+      //       .attr("opacity", 1)
+      //     }else{
+      //       pressed = true
+      //       svg.selectAll(".layer")
+      //         .transition()
+      //         .duration(250)
+      //         .attr("opacity", function(d, j) {
+      //           return j != i ? 0.2 : 1;
+      //         })
+      //     }
+      //   })
+
 
   var vertical = svg.append("line")
     .attr({
@@ -151,22 +163,35 @@ var chart = d3.json("data/occs.json", function(json) {
       y1: 0,
       y2: height,
       class: "vertical",
-      stroke: "crimson"
+      stroke: "white",
+      // transform: "translate(4,0)"
     });
 
-    svg.on("mousemove", function(){  
-           var mousex = d3.mouse(this)[0];
-           if(Math.abs(d3.event.webkitMovementX) > 1) {
-            time = moment(xLine.invert(mousex));
-            if(pause) update();
-          }
-           vertical.attr({
-            x1: mousex + 5,
-            x2: mousex + 5
-           })
+  svg.on("mousemove", function(){  
+         var mousex = d3.mouse(this)[0];
+         if(Math.abs(d3.event.webkitMovementX) > 1) {
+          time = moment(xLine.invert(mousex));
+          if(pause) update();
+        }
+
+       });
 
 
-         });
+  sw = function(){
+
+    if(st){
+      stack.offset("silhouette");
+    }else{
+      stack.offset("zero");
+    }
+
+    streams.data(stack(layers))
+      .transition()
+      .duration(500)
+      .ease('cubic')
+      .attr("d", function(d) { return area(d.values); })
+
+  }
 
 });
 

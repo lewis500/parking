@@ -1,5 +1,3 @@
-//NO PRIDE IN MY CODE! I'M COPY AND PASTING THIS! HOLA, ENJALOT
-
 var data = [{"city":"New York ","non-workers living in place":4437066,"workers commuting out":303497,"workers commuting in":912451,"workers living and working in city":3337908},
 	{"city":"Los Angeles ","non-workers living in place":2024529,"workers commuting out":584880,"workers commuting in":754973,"workers living and working in city":1163077},
 	{"city":"Chicago ","non-workers living in place":1484155,"workers commuting out":312747,"workers commuting in":490204,"workers living and working in city":906564},

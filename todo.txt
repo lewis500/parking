@@ -1,16 +1,8 @@
 SHORT TERM
-x axis on area chart
-tooltip on garage
 
-fonts on both vis'
-
-
-dc.js for stacked line chart
-3 days of data, moving averages
-tooltips
-
-tooltips and mouseover on garage stuff
-
-
-add am/pm to clock
-cursor pointer on circles, clock, bars
+make it so clicking on an area layer triggers a pause
+tooltip on garages, highways
+title on area chart
+tooltip for area chart
+ 
+ make the ID's called keys, and make the same function get called when you mouseover a garage or a layer
