@@ -43,10 +43,10 @@
 
       $("#pause").on("click",function(){
         pause = !pause;
-        last = 0;
 
         if(!pause){
 
+          last = 0;
           $(this).html("Pause");
 
           d3.timer(tick);

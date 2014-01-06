@@ -1,5 +1,4 @@
 //=========CLOCK PARAMETERS AND HELPER FUNCTIONS===========
-
 var maxSize = 250
   , offSetX = maxSize/2
   , offSetY = offSetX
@@ -178,8 +177,6 @@ function update(){
     x2: trans
   })
 
-
-
 } //update;
 
 var last = 0;
@@ -190,8 +187,8 @@ function tick (elapsed){
 
       time.add(t,"minutes");
 
-      if(time.isAfter("2013-07-15", "day")){
-        time = moment("12:00 AM July 15, 2013");
+      if(time.isAfter(end)){
+        time = moment(start);
         update();
       }else{
         update();

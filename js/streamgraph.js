@@ -98,8 +98,7 @@ var chart = d3.json("data/occs.json", function(json) {
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis);
 
-    var datearray = [];
-
+  var pressed = false;
 
   svg.selectAll(".layer")
       // .on("mousemove", function(d, i) {
@@ -125,14 +124,25 @@ var chart = d3.json("data/occs.json", function(json) {
       //   .attr("opacity", 1);
       // })
       .on("click", function(d, i) {
-        svg.selectAll(".layer").transition()
-        .duration(250)
-        .attr("opacity", function(d, j) {
-          return j != i ? 0.2 : 1;
-      })})
-      .on("mouseout", function(d, i) {
-        tooltip.style("visibility", "hidden");
-      });
+        if(pressed){
+            pressed = false;
+            svg.selectAll(".layer")
+            .transition()
+            .duration(250)
+            .attr("opacity", 1)
+          }else{
+            pressed = true
+            svg.selectAll(".layer")
+              .transition()
+              .duration(250)
+              .attr("opacity", function(d, j) {
+                return j != i ? 0.2 : 1;
+              })
+          }
+        })
+      // .on("mouseout", function(d, i) {
+      //   tooltip.style("visibility", "hidden");
+      // });
 
   var vertical = svg.append("line")
     .attr({
@@ -145,17 +155,17 @@ var chart = d3.json("data/occs.json", function(json) {
     });
 
     svg.on("mousemove", function(){  
-           mousex = d3.mouse(this);
-           mousex = mousex[0] + 5;
+           var mousex = d3.mouse(this)[0];
+           if(Math.abs(d3.event.webkitMovementX) > 1) {
+            time = moment(xLine.invert(mousex));
+            if(pause) update();
+          }
            vertical.attr({
-            x1: mousex,
-            x2: mousex
+            x1: mousex + 5,
+            x2: mousex + 5
            })
-         })
-        .on("mouseover", function(){  
-           mousex = d3.mouse(this);
-           mousex = mousex[0] + 5;
-           vertical.style("left", mousex + "px")
+
+
          });
 
 });

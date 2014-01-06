@@ -1,6 +1,7 @@
 SHORT TERM
+x axis on area chart
+tooltip on garage
 
-pause button
 fonts on both vis'
 
 
