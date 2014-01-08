@@ -193,6 +193,8 @@ var chart = d3.json("data/occs.json", function(data) {
 
   }
 
+  d3.timer(tick)
+
 });
 
 })()

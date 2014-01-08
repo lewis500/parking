@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- ============== CSS ===================== -->
+    <title>MPG vs. GPHM</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="styles/style.css"> -->
+
+</head>
+
+<!-- ============== BODY =================== -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX","output/HTML-CSS"],
+  extensions: ["tex2jax.js","MathMenu.js","MathZoom.js"],
+  TeX: {
+    extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+  }
+});
+</script>
+    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<body>
+  <p>
+  In the 2010 Census, San Francisco was credited with about <a href="http://quickfacts.census.gov/qfd/states/06/06075.html">789,000 residents</a>, but if you took a head count in the middle of the day, you'd find another 162,000 people. We know this because the Census Bureau estimates a statistic called <a href="http://www.census.gov/hhes/commuting/data/daytimepop.html">Commuter-Adjusted Daytime Population</a> that takes into account the fact people come and go over the course of a day. 
+  </p>
+
+  \[\begin{aligned}
+    &\text{commuter-adjusted daytime population}  &&= (\text{non-workers living in area}) + (\text{total workers working in area})\\
+    &&&= (\text{total resident population} - \text{total workers living in area}) + (\text{total workers working in area})
+    \end{aligned}
+  \]    
+
+  <p>
+  This statistic underscores how a city is much more than a piece of land that happens to have a bunch of houses: it's a workplace, too. Additionally, it gives a better idea of the challenges faced by city governments, who have to plan and build infrastructure for all the inbound travelers. The chart below shows the breakdown of a city's population in the middle of the day. 265,000 workers come into San Francisco, and 103,000 head out--swelling its population by 21%. The leader in overall migration is Washington, DC, where the daytime population is 79% higher than its nighttime population.
+  </p>
+
+  INSERT BAR CHART
+
+  <p>
+  San Francisco Muni has accidentally made it possible to visualize the rhythm of this daily migration. Their <a href="http://sfpark.org">SF Park</a> program raises and lowers the price of public parking spaces over the course of the day, and as part of the initiative they've made it possible for app developers to find out, in real time, how many cars are parked in municipal garages. By combining this data with traffic data from the California Department of Transportation's highway sensors, we can visualize Monday, July 15, 2013...a normal day in the life of San Francisco's central business district. The circles represent public parking garages, and their sizes change according to how many cars they're holding, which is called "occupancy." The thickness of highways shows the number of cars passing, and their colors distinguish inbound traffic from outbound.
+  </p>
+
+  INSERT MAP HERE
+
+  </body>
+
+<!-- ============== LIBRARIES =================== -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+
+</html>

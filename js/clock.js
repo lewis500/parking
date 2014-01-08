@@ -4,7 +4,7 @@ var maxSize = 230
   , offSetY = offSetX
   , width = maxSize
   , height = maxSize
-  ,fontSize = 14
+  , fontSize = 14
   , maxSize=Math.min(width,height)
   , pi = Math.PI
   , rad = maxSize/2-40
@@ -191,11 +191,11 @@ function update(){
   if( selectGarage !== "total"){
     tooltip.html("<p>" + "garage: " + garageKey[selectGarage] + "<br>time: " + time.format("h:mm A") + "<br>occupancy: " 
       +  o[selectGarage] + 
-      "</p>");
+      " cars</p>");
   }else{
     tooltip.html("<p>" + "garage: total" + "<br>time: " + time.format("h:mm A") + "<br>occupancy: " 
       +  sum  + 
-      "</p>");
+      " cars</p>");
   }
 
 } //update;
@@ -220,6 +220,3 @@ function tick (elapsed){
       return pause;
     }
 
-setTimeout(function(){
-  d3.timer(tick)
-},400)
