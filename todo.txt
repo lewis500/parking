@@ -1,8 +1,9 @@
 SHORT TERM
 
 make it so clicking on an area layer triggers a pause
-tooltip on garages, highways
-title on area chart
-tooltip for area chart
- 
- make the ID's called keys, and make the same function get called when you mouseover a garage or a layer
+flows area chart
+button for steamgraph
+y axis label
+make the ID's called keys, and make the same function get called when you mouseover a garage or a layer
+
+QUESTIONS

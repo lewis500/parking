@@ -28,7 +28,7 @@ var data = [{"city":"New York ","non-workers":4437066,"workers commuting out":-3
     {"city":"Seattle ","non-workers":255691,"workers commuting out":-87793,"workers commuting in":245380,"workers living and working in city":251756},
     {"city":"Denver ","non-workers":282655,"workers commuting out":-112382,"workers commuting in":268512,"workers living and working in city":183050},
     {"city":"Baltimore ","non-workers":354034,"workers commuting out":-103871,"workers commuting in":206924,"workers living and working in city":162633},
-    {"city":"Nashville-Davidson","non-workers":295252,"workers commuting out":-57768,"workers commuting in":159882,"workers living and working in city":234770}]
+    {"city":"Nashville","non-workers":295252,"workers commuting out":-57768,"workers commuting in":159882,"workers living and working in city":234770}]
 
 var margin = {top: 20, right: 20, bottom: 30, left: 130},
     width = 620 - margin.left - margin.right,

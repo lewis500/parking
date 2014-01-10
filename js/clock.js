@@ -1,14 +1,14 @@
 //=========CLOCK PARAMETERS AND HELPER FUNCTIONS===========
 var maxSize = 230
   , offSetX = maxSize/2
-  , offSetY = offSetX
+  , offSetY = offSetX + 100
   , width = maxSize
   , height = maxSize
   , fontSize = 14
   , maxSize=Math.min(width,height)
   , pi = Math.PI
   , rad = maxSize/2-40
-  , chartLabel = d3.select("#label")
+  , chartLabel = d3.select("#label");
 
 function toDegrees(rad) {
   return rad * (180/Math.PI);
@@ -16,10 +16,10 @@ function toDegrees(rad) {
 
 //=========CREATE THE SVG AND CLOCK PARTS===========
 
-var  vis = d3.select("#clock")
+var vis = d3.select("#clock")
     .append("svg")
     .attr("width", width)
-    .attr("height", height);
+    .attr("height", height + 100);
 
 var clockGroup = vis.append("g")
     .attr("transform", "translate(" + offSetX + "," + offSetY + ")");
@@ -32,6 +32,27 @@ clockGroup.append("circle")
     .attr("stroke-width","3px");
 
 clockGroup.append("circle").attr("r", 4).attr("fill", "black").attr("class", "clock innercircle");
+
+var legend = clockGroup.append("g")
+  .attr("class","g-legend")
+  .selectAll(".legend")
+    .data(["inbound traffic","outbound traffic"])
+  .enter().append("g")
+    .attr("class", "legend")
+    .attr("transform", function(d, i) { return "translate(45," + ( -145 + i * 25) +  ")"; });
+
+legend.append("rect")
+    .attr("x", 0 + "px")
+    .attr("width", 18)
+    .attr("height", 18)
+    .style("fill", function(d){ return (d=="inbound traffic") ? "#2ecc71" : "#e74c3c" ;  });
+
+legend.append("text")
+    .attr("x",-10 + "px")
+    .attr("y", 9)
+    .attr("dy", ".35em")
+    .style("text-anchor", "end")
+    .text(function(d) { return d; });
 
 var tickLabelGroup=vis.append("g").attr("transform", "translate(" + offSetX + "," + offSetY + ")");
 
@@ -149,7 +170,7 @@ var AmPm = gHands.append("g")
   .append("text")
   .text(function(){return (time.hour() >= 12) ? "PM" : "AM" })
   .attr("dx", "0em")
-  .attr("dy","3.5em")
+  .attr("dy","3em")
   .style("text-anchor", "middle")
 
 //===========UPDATE FUNCTION FOR WHENEVER TIME CHANGES===============
@@ -169,13 +190,13 @@ function update(){
   var sum = 0;
 
   garage.attr("r", function(d){
-      sum += +o[d.ID]; 
-      return r( o[d.ID] );
+      sum += +o[d.key]; 
+      return r( o[d.key] );
     });
 
   d3.selectAll(".road")
     .attr("stroke-width", function(d){
-      return th(q[d.ID]);
+      return th(q[d.key]);
     });
 
   AmPm.text(function(){ return (time.hour()>+12) ? "PM" : "AM" });
@@ -189,12 +210,12 @@ function update(){
     });
 
   if( selectGarage !== "total"){
-    tooltip.html("<p>" + "garage: " + garageKey[selectGarage] + "<br>time: " + time.format("h:mm A") + "<br>occupancy: " 
-      +  o[selectGarage] + 
+    tooltip.html("<p>" + "<b>Garage:</b> " + garageKey[selectGarage] + "<br><b>Time:</b> " + time.format("h:mm A") + "<br><b>Occupancy:</b> " 
+      +  numFormat(o[selectGarage]) + 
       " cars</p>");
   }else{
-    tooltip.html("<p>" + "garage: total" + "<br>time: " + time.format("h:mm A") + "<br>occupancy: " 
-      +  sum  + 
+    tooltip.html("<p>" + "<b>Garage:</b> All" + "<br><b>Time:</b> " + time.format("h:mm A") + "<br><b>Occupancy:</b> " 
+      +  numFormat(sum)  + 
       " cars</p>");
   }
 

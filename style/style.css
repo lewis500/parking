@@ -16,22 +16,18 @@
 
 body {
 	padding: 20px 0px 0px 50px;
-  font-family: 'Droid Sans', sans-serif;;
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 14px;
+}
+
+.d3-slider-handle{
+	cursor: pointer;
 }
 
 #bayBridge{
       fill: none;
       stroke: #00f;
       stroke-width: 4px;
-}
-
-.pipe {
-  fill: none;
-  stroke: #000;
-}
-.flow {
-  fill: none;
-  stroke: #0f0;
 }
 
 .road{
@@ -43,8 +39,9 @@ body {
 
 #clock{
 	position: absolute;
-	top: 175px;
+	top: 100px;
 	left: 460px;
+	pointer-events: none;
 }
 
 .out{
@@ -65,6 +62,11 @@ body {
   stroke: #000;
   stroke-width: 1.5px;
   shape-rendering: crispEdges;
+}
+
+.axis{
+	pointer-events: none;
+
 }
 
 #pause{
@@ -107,5 +109,17 @@ body {
 
 #tooltip{
 	position: absolute;
-	left: 120px;
+	left: 140px;
+	pointer-events: none;
+	font-size: 14px;
 }
+
+.legend{
+	z-index: 1;
+	font-color: white;
+}
+
+.legend text{
+	fill: white;
+}
+

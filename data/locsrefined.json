@@ -3,7 +3,7 @@
     "name": "Civic Center Garage",
     "cap": 843,
     "type": "OFF",
-    "ID": "931",
+    "key": "931",
     "loc": {
       "lon": -122.4177671135,
       "lat": 37.7802465669
@@ -13,7 +13,7 @@
     "name": "Ellis OFarrell Garage",
     "cap": 950,
     "type": "OFF",
-    "ID": "932",
+    "key": "932",
     "loc": {
       "lon": -122.4071540583,
       "lat": 37.7863925455
@@ -23,7 +23,7 @@
     "name": "Fifth and Mission Garage",
     "cap": 2586,
     "type": "OFF",
-    "ID": "933",
+    "key": "933",
     "loc": {
       "lon": -122.405537559,
       "lat": 37.7832776731
@@ -33,7 +33,7 @@
     "name": "Golden Gateway Garage",
     "cap": 1142,
     "type": "OFF",
-    "ID": "934",
+    "key": "934",
     "loc": {
       "lon": -122.3986032,
       "lat": 37.79544154
@@ -43,7 +43,7 @@
     "name": "Japan Center Garage",
     "cap": 745,
     "type": "OFF",
-    "ID": "935",
+    "key": "935",
     "loc": {
       "lon": -122.4301614271,
       "lat": 37.7849220106
@@ -53,7 +53,7 @@
     "name": "Japan Center Annex Garage",
     "cap": 175,
     "type": "OFF",
-    "ID": "936",
+    "key": "936",
     "loc": {
       "lon": -122.4328661663,
       "lat": 37.7849547433
@@ -63,7 +63,7 @@
     "name": "Lombard Street Garage",
     "cap": 205,
     "type": "OFF",
-    "ID": "938",
+    "key": "938",
     "loc": {
       "lon": -122.4348921128,
       "lat": 37.7996475876
@@ -73,7 +73,7 @@
     "name": "Mission Bartlett Garage",
     "cap": 230,
     "type": "OFF",
-    "ID": "939",
+    "key": "939",
     "loc": {
       "lon": -122.4204335636,
       "lat": 37.7568400419
@@ -83,7 +83,7 @@
     "name": "Moscone Center Garage",
     "cap": 752,
     "type": "OFF",
-    "ID": "941",
+    "key": "941",
     "loc": {
       "lon": -122.3994795,
       "lat": 37.78452379
@@ -93,7 +93,7 @@
     "name": "Performing Arts Garage",
     "cap": 600,
     "type": "OFF",
-    "ID": "943",
+    "key": "943",
     "loc": {
       "lon": -122.4225312,
       "lat": 37.77810302
@@ -103,7 +103,7 @@
     "name": "St. Marys Square Garage",
     "cap": 392,
     "type": "OFF",
-    "ID": "948",
+    "key": "948",
     "loc": {
       "lon": -122.4045476,
       "lat": 37.79199927
@@ -113,7 +113,7 @@
     "name": "Sutter Stockton Garage",
     "cap": 1650,
     "type": "OFF",
-    "ID": "949",
+    "key": "949",
     "loc": {
       "lon": -122.4068556189,
       "lat": 37.7897829226
@@ -123,7 +123,7 @@
     "name": "Union Square Garage",
     "cap": 800,
     "type": "OFF",
-    "ID": "950",
+    "key": "950",
     "loc": {
       "lon": -122.407447946,
       "lat": 37.7876789151

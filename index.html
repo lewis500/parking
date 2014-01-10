@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Testmap</title>
+  <title>Tides of the City</title>
   <meta charset="utf-8" />
   <style>
   @import url(http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css);
@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
   <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="style/style.css">
+  <link rel="stylesheet" href="style/slider.css">
   <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
   <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
   <script type="text/javascript" src="js/stamen.js"></script>
@@ -27,11 +28,18 @@
   <div id="map">
     <button id="pause" class="btn btn-lg btn-warning">Pause</button>
   </div>
-  <div id="slider"></div>
+  <br>
+  <h4>Garage Occupancies</h4>
   <div id="clock"></div>
   <div id="garageChart">
     <div id="tooltip"></div>
     <!-- <div id="label"></div> -->
+  </div>
+  <div>
+    <h4>Clock Speed</h4>
+    <span>slow</span>
+    <span style="margin-left: 245px;">fast</span>
+    <div id="slider"  style="width:300px"></div>
   </div>
 
  </body>
